@@ -38,16 +38,23 @@ namespace ConnectFourEngine
             return sb.ToString();
         }
         
+        private static string UlongToString(ulong value)
+        {
+            return Convert.ToString((long)value, 2).PadLeft(64, '0');
+        }
+        
         static void Main()
         {
             const ulong bitboard = 0b010000000000000000000000000000000000001110;
             
-            Console.WriteLine("Multiline Output:");
             Console.WriteLine(BitboardToString(bitboard, true));
             Console.WriteLine();
             
-            Console.WriteLine("Single-line Output:");
             Console.WriteLine(BitboardToString(bitboard, false));
+            Console.WriteLine();
+            
+            Console.WriteLine("First Column Mask:");
+            Console.WriteLine(UlongToString((1UL << Constants.ROWS) - 1));
         }
     }
 }
