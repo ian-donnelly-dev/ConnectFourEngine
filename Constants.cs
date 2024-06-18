@@ -2,10 +2,10 @@
 {
     public static class Constants
     {
-        public const int Columns = 7;
-        public const int Rows = 6;
+        public const int COLUMNS = 7;
+        public const int ROWS = 6;
         
-        public const int MaxValue = 19;
-        public const int MaxDepth = 10;
+        public const int MAX_VALUE = 19;
+        public const int MAX_DEPTH = 10;
     }
 }
