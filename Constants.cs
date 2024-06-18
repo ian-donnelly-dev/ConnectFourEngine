@@ -7,5 +7,7 @@
         
         public const int MAX_VALUE = 19;
         public const int MAX_DEPTH = 10;
+        
+        public const ulong FIRST_COLUMN_MASK = (1UL << ROWS) - 1;
     }
 }
