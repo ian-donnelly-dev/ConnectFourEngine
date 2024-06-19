@@ -11,7 +11,7 @@ namespace ConnectFourEngine
 
             for (int row = Constants.ROWS - 1; row >= 0; row--)
             {
-                for (int col = 0; col < Constants.COLUMNS; col++)
+                for (int col = 0; col < Constants.COLS; col++)
                 {
                     ulong mask = 1UL << col * Constants.ROWS + row;
                     
@@ -28,7 +28,7 @@ namespace ConnectFourEngine
                         sb.Append('.');
                     }
 
-                    if (col < Constants.COLUMNS - 1)
+                    if (col < Constants.COLS - 1)
                     {
                         sb.Append(' ');
                     }
@@ -48,11 +48,11 @@ namespace ConnectFourEngine
             
             for (int row = Constants.ROWS - 1; row >= 0; row--)
             {
-                for (int col = 0; col < Constants.COLUMNS; col++)
+                for (int col = 0; col < Constants.COLS; col++)
                 {
                     sb.Append((bitboard & (1UL << col * Constants.ROWS + row)) != 0 ? '1' : '0');
                     
-                    if (col < Constants.COLUMNS - 1)
+                    if (col < Constants.COLS - 1)
                     {
                         sb.Append(' ');
                     }
@@ -68,7 +68,7 @@ namespace ConnectFourEngine
         
         private static string UlongToString(ulong bitboard, bool cropToBoard = true)
         {
-            int length = cropToBoard ? Constants.ROWS * Constants.COLUMNS : 64;
+            int length = cropToBoard ? Constants.BOARD_SIZE : 64;
             return Convert.ToString((long)bitboard, 2).PadLeft(length, '0');
         }
         
