@@ -28,6 +28,11 @@ namespace ConnectFourEngine
             return GetColumnHeight(column) < Constants.ROWS;
         }
         
+        public bool IsBoardFull()
+        {
+            return BitOperations.PopCount(Player1Bitboard | Player2Bitboard) == Constants.BOARD_SIZE;
+        }
+        
         public void MakeMove(int column)
         {
             ulong moveBit = 1UL << GetColumnHeight(column) + column * Constants.ROWS;
