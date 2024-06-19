@@ -61,6 +61,42 @@ namespace ConnectFourEngine
             }
         }
         
+        public void LoadBitboards(ulong player1Bitboard, ulong player2Bitboard)
+        {
+            Player1Bitboard = player1Bitboard;
+            Player2Bitboard = player2Bitboard;
+        }
+        
+        public void LoadDropSequence(string dropSequence)
+        {
+            Player1Bitboard = 0UL;
+            Player2Bitboard = 0UL;
+
+            foreach (char c in dropSequence)
+            {
+                MakeMove(c - '0');
+            }
+        }
+        
+        public void LoadStateString(string stateString)
+        {
+            Player1Bitboard = 0UL;
+            Player2Bitboard = 0UL;
+
+            for (int i = 0; i < stateString.Length; i++)
+            {
+                char cellState = stateString[i];
+                if (cellState == '1')
+                {
+                    Player1Bitboard |= 1UL << i;
+                }
+                else if (cellState == '2')
+                {
+                    Player2Bitboard |= 1UL << i;
+                }
+            }
+        }
+        
         private int GetColumnHeight(int column)
         {
             return BitOperations.PopCount((Player1Bitboard | Player2Bitboard) & GetColumnMask(column));

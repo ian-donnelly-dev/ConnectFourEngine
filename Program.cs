@@ -75,18 +75,17 @@ namespace ConnectFourEngine
         static void Main()
         {
             Board board = new Board();
-            
-            board.MakeMove(3);
-            board.MakeMove(3);
-            board.MakeMove(4);
-            
+
+            board.LoadBitboards(0b01, 0b10);
             Console.WriteLine(BoardToString(board));
             Console.WriteLine();
             
-            Console.WriteLine(BitboardToString(board.Player1Bitboard));
+            board.LoadDropSequence("33443");
+            Console.WriteLine(BoardToString(board));
             Console.WriteLine();
             
-            Console.WriteLine(BitboardToString(board.Player2Bitboard));
+            board.LoadStateString("121200000000000000000000000000000000121212");
+            Console.WriteLine(BoardToString(board));
         }
     }
 }
