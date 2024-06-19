@@ -13,24 +13,45 @@ namespace ConnectFourEngine
             Player2Bitboard = 0UL;
         }
         
-        public bool IsPlayer1Turn()
+        public void LoadBitboards(ulong player1Bitboard, ulong player2Bitboard)
         {
-            return BitOperations.PopCount(Player1Bitboard) == BitOperations.PopCount(Player2Bitboard);
+            Player1Bitboard = player1Bitboard;
+            Player2Bitboard = player2Bitboard;
         }
         
-        public int GetMovesCount(bool isPlayer1)
+        public void LoadStateString(string stateString)
         {
-            return isPlayer1 ? BitOperations.PopCount(Player1Bitboard) : BitOperations.PopCount(Player2Bitboard);
+            Player1Bitboard = 0UL;
+            Player2Bitboard = 0UL;
+
+            for (int i = 0; i < stateString.Length; i++)
+            {
+                char cellState = stateString[i];
+                if (cellState == '1')
+                {
+                    Player1Bitboard |= 1UL << i;
+                }
+                else if (cellState == '2')
+                {
+                    Player2Bitboard |= 1UL << i;
+                }
+            }
+        }
+        
+        public void LoadDropSequence(string dropSequence)
+        {
+            Player1Bitboard = 0UL;
+            Player2Bitboard = 0UL;
+
+            foreach (char c in dropSequence)
+            {
+                MakeMove(c - '0');
+            }
         }
         
         public bool IsColumnPlayable(int column)
         {
             return GetColumnHeight(column) < Constants.ROWS;
-        }
-        
-        public bool IsBoardFull()
-        {
-            return BitOperations.PopCount(Player1Bitboard | Player2Bitboard) == Constants.BOARD_SIZE;
         }
         
         public void MakeMove(int column)
@@ -61,40 +82,19 @@ namespace ConnectFourEngine
             }
         }
         
-        public void LoadBitboards(ulong player1Bitboard, ulong player2Bitboard)
+        public bool IsPlayer1Turn()
         {
-            Player1Bitboard = player1Bitboard;
-            Player2Bitboard = player2Bitboard;
+            return BitOperations.PopCount(Player1Bitboard) == BitOperations.PopCount(Player2Bitboard);
         }
         
-        public void LoadDropSequence(string dropSequence)
+        public int GetMovesCount(bool isPlayer1)
         {
-            Player1Bitboard = 0UL;
-            Player2Bitboard = 0UL;
-
-            foreach (char c in dropSequence)
-            {
-                MakeMove(c - '0');
-            }
+            return isPlayer1 ? BitOperations.PopCount(Player1Bitboard) : BitOperations.PopCount(Player2Bitboard);
         }
         
-        public void LoadStateString(string stateString)
+        public bool IsBoardFull()
         {
-            Player1Bitboard = 0UL;
-            Player2Bitboard = 0UL;
-
-            for (int i = 0; i < stateString.Length; i++)
-            {
-                char cellState = stateString[i];
-                if (cellState == '1')
-                {
-                    Player1Bitboard |= 1UL << i;
-                }
-                else if (cellState == '2')
-                {
-                    Player2Bitboard |= 1UL << i;
-                }
-            }
+            return BitOperations.PopCount(Player1Bitboard | Player2Bitboard) == Constants.BOARD_SIZE;
         }
         
         private int GetColumnHeight(int column)
