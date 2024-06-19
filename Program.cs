@@ -13,8 +13,7 @@ namespace ConnectFourEngine
             {
                 for (int col = 0; col < Constants.COLUMNS; col++)
                 {
-                    int bitIndex = col * Constants.ROWS + row;
-                    ulong mask = 1UL << bitIndex;
+                    ulong mask = 1UL << col * Constants.ROWS + row;
                     
                     if ((board.Player1Bitboard & mask) != 0)
                     {
@@ -51,8 +50,7 @@ namespace ConnectFourEngine
             {
                 for (int col = 0; col < Constants.COLUMNS; col++)
                 {
-                    int bitIndex = col * Constants.ROWS + row;
-                    sb.Append((bitboard & (1UL << bitIndex)) != 0 ? '1' : '0');
+                    sb.Append((bitboard & (1UL << col * Constants.ROWS + row)) != 0 ? '1' : '0');
                     
                     if (col < Constants.COLUMNS - 1)
                     {
