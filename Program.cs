@@ -8,10 +8,10 @@ namespace ConnectFourEngine
         {
             Board board = new Board();
             
-            board.ImportBoardState("000000_000000_000000_121200_000000_000000_000000");
+            board.ImportBoardState("121211_110000_000000_000000_000000_200000_220000");
             
-            Console.WriteLine("Board after loading state string:");
             Console.WriteLine(board.StringifyBoard());
+            Console.WriteLine(board.CheckWin(true) || board.CheckWin(false));
         }
     }
 }
