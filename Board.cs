@@ -155,7 +155,7 @@ namespace ConnectFourEngine
             }
         }
         
-        public bool CheckWin(bool isPlayer1)
+        public bool IsWinner(bool isPlayer1)
         {
             ulong bitboard = isPlayer1 ? Player1Bitboard : Player2Bitboard;
 

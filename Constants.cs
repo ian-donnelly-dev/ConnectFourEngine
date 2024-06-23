@@ -8,7 +8,7 @@
         public const int BOARD_SIZE = ROWS * COLS;
         public const ulong FIRST_COLUMN_MASK = (1UL << ROWS) - 1;
         
-        public const int MAX_VALUE = 19;
-        public const int MAX_DEPTH = 10;
+        public const int MAX_SCORE = 19;
+        public const int MINIMAX_DEPTH_LIMIT = 10;
     }
 }
