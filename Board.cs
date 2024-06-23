@@ -1,20 +1,14 @@
-﻿using System.Numerics;
-using System.Text;
+﻿using System.Text;
+using System.Numerics;
 
 namespace ConnectFourEngine
 {
     public class Board
     {
-        public ulong Player1Bitboard { get; private set; }
-        public ulong Player2Bitboard{ get; private set; }
+        private ulong Player1Bitboard = 0UL;
+        private ulong Player2Bitboard = 0UL;
         
-        public Board()
-        {
-            Player1Bitboard = 0UL;
-            Player2Bitboard = 0UL;
-        }
-        
-        public void LoadBoardStateString(string stateString)
+        public void ImportBoardState(string stateString)
         {
             Player1Bitboard = 0UL;
             Player2Bitboard = 0UL;
@@ -39,9 +33,9 @@ namespace ConnectFourEngine
             }
         }
         
-        public string ExportBoardStateString()
+        public string ExportBoardState()
         {
-            StringBuilder sb = new StringBuilder();
+            StringBuilder encodedBoard = new StringBuilder();
 
             for (int col = 0; col < Constants.COLS; col++)
             {
@@ -51,24 +45,61 @@ namespace ConnectFourEngine
                     
                     if ((Player1Bitboard & mask) != 0)
                     {
-                        sb.Append('1');
+                        encodedBoard.Append('1');
                     }
                     else if ((Player2Bitboard & mask) != 0)
                     {
-                        sb.Append('2');
+                        encodedBoard.Append('2');
                     }
                     else
                     {
-                        sb.Append('0');
+                        encodedBoard.Append('0');
                     }
                 }
                 if (col < Constants.COLS - 1)
                 {
-                    sb.Append('_');
+                    encodedBoard.Append('_');
                 }
             }
 
-            return sb.ToString();
+            return encodedBoard.ToString();
+        }
+
+        public string StringifyBoard()
+        {
+            StringBuilder displayBoard = new StringBuilder();
+
+            for (int row = Constants.ROWS - 1; row >= 0; row--)
+            {
+                for (int col = 0; col < Constants.COLS; col++)
+                {
+                    ulong mask = 1UL << (col * Constants.ROWS + row);
+                    
+                    if ((Player1Bitboard & mask) != 0)
+                    {
+                        displayBoard.Append('x');
+                    }
+                    else if ((Player2Bitboard & mask) != 0)
+                    {
+                        displayBoard.Append('o');
+                    }
+                    else
+                    {
+                        displayBoard.Append('.');
+                    }
+
+                    if (col < Constants.COLS - 1)
+                    {
+                        displayBoard.Append(' ');
+                    }
+                }
+                if (row > 0)
+                {
+                    displayBoard.AppendLine();
+                }
+            }
+
+            return displayBoard.ToString();
         }
         
         public bool IsPlayer1Turn()
