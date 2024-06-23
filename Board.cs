@@ -13,7 +13,7 @@ namespace ConnectFourEngine
             Player1Bitboard = 0UL;
             Player2Bitboard = 0UL;
             int bitIndex = 0;
-
+            
             foreach (char cellState in stateString)
             {
                 switch (cellState)
@@ -30,18 +30,24 @@ namespace ConnectFourEngine
                         bitIndex++;
                         break;
                 }
+                
+                if ((bitIndex + 1) % (Constants.ROWS + 1) == 0)
+                {
+                    bitIndex++;
+                }
             }
         }
         
         public string ExportBoardState()
         {
             StringBuilder encodedBoard = new StringBuilder();
-
+            int bitIndex = 0;
+            
             for (int col = 0; col < Constants.COLS; col++)
             {
                 for (int row = 0; row < Constants.ROWS; row++)
                 {
-                    ulong mask = 1UL << (col * Constants.ROWS + row);
+                    ulong mask = 1UL << bitIndex;
                     
                     if ((Player1Bitboard & mask) != 0)
                     {
@@ -55,25 +61,33 @@ namespace ConnectFourEngine
                     {
                         encodedBoard.Append('0');
                     }
+                    
+                    bitIndex++;
+                    
+                    if ((bitIndex + 1) % (Constants.ROWS + 1) == 0)
+                    {
+                        bitIndex++;
+                    }
                 }
+                
                 if (col < Constants.COLS - 1)
                 {
                     encodedBoard.Append('_');
                 }
             }
-
+            
             return encodedBoard.ToString();
         }
-
+        
         public string StringifyBoard()
         {
             StringBuilder displayBoard = new StringBuilder();
-
+            
             for (int row = Constants.ROWS - 1; row >= 0; row--)
             {
                 for (int col = 0; col < Constants.COLS; col++)
                 {
-                    ulong mask = 1UL << (col * Constants.ROWS + row);
+                    ulong mask = 1UL << col * (Constants.ROWS + 1) + row;
                     
                     if ((Player1Bitboard & mask) != 0)
                     {
@@ -87,18 +101,19 @@ namespace ConnectFourEngine
                     {
                         displayBoard.Append('.');
                     }
-
+                    
                     if (col < Constants.COLS - 1)
                     {
                         displayBoard.Append(' ');
                     }
                 }
+                
                 if (row > 0)
                 {
                     displayBoard.AppendLine();
                 }
             }
-
+            
             return displayBoard.ToString();
         }
         
@@ -114,8 +129,8 @@ namespace ConnectFourEngine
         
         public void MakeMove(int column)
         {
-            ulong moveBit = 1UL << column * Constants.ROWS + GetColumnHeight(column);
-
+            ulong moveBit = 1UL << (column * (Constants.ROWS + 1) + GetColumnHeight(column));
+            
             if (IsPlayer1Turn())
             {
                 Player1Bitboard |= moveBit;
@@ -125,11 +140,11 @@ namespace ConnectFourEngine
                 Player2Bitboard |= moveBit;
             }
         }
-
+        
         public void UnmakeMove(int column)
         {
-            ulong moveBit = 1UL << column * Constants.ROWS + GetColumnHeight(column) - 1;
-
+            ulong moveBit = 1UL << (column * (Constants.ROWS + 1) + GetColumnHeight(column) - 1);
+            
             if (IsPlayer1Turn())
             {
                 Player2Bitboard &= ~moveBit;
@@ -152,7 +167,7 @@ namespace ConnectFourEngine
         
         private int GetColumnHeight(int column)
         {
-            ulong columnMask = Constants.FIRST_COLUMN_MASK << (column * Constants.ROWS);
+            ulong columnMask = Constants.FIRST_COLUMN_MASK << (column * (Constants.ROWS + 1));
             return BitOperations.PopCount((Player1Bitboard | Player2Bitboard) & columnMask);
         }
     }
