@@ -9,7 +9,7 @@ namespace ConnectFourEngine
         static void Main()
         {
             Board board = new Board();
-            string boardState = "000000_000000_000000_121200_000000_000000_000000";
+            string boardState = "000000_100000_211120_122000_120000_200000_000000";
             board.ImportBoardState(boardState);
             
             Console.WriteLine($"Loaded board state string {board.ExportBoardState()}:");
@@ -19,7 +19,7 @@ namespace ConnectFourEngine
             Console.WriteLine($"Board state key: {board.GetBoardKey()}.");
             Console.WriteLine();
             
-            Solver solver = new Solver(board);
+            Solver solver = new Solver(board, 64);
             
             Stopwatch stopwatch = Stopwatch.StartNew();
             int[] scores = solver.RootMinimax();

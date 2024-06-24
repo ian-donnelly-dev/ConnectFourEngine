@@ -5,10 +5,12 @@ namespace ConnectFourEngine
     public class Solver
     {
         private readonly Board board;
+        private readonly TranspositionTable transpositionTable;
         
-        public Solver(Board board)
+        public Solver(Board board, int tableSizeMb)
         {
             this.board = board;
+            transpositionTable = new TranspositionTable(tableSizeMb);
         }
         
         public int[] RootMinimax()
@@ -35,6 +37,12 @@ namespace ConnectFourEngine
             if (board.IsBoardFull())
             {
                 return 0;
+            }
+            
+            ulong key = board.GetBoardKey();
+            if (transpositionTable.TryGetValue(key, out int storedScore))
+            {
+                return storedScore;
             }
             
             if (maximizingPlayer)
@@ -84,6 +92,8 @@ namespace ConnectFourEngine
                 }
             }
             
+            transpositionTable.AddEntry(key, bestScore);
+
             return bestScore;
         }
         
