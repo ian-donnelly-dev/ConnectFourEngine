@@ -5,7 +5,7 @@
         public const int ROWS = 6;
         public const int COLS = 7;
 
-        public const int TRANSPOSITION_TABLE_SIZE_MB = 64;
+        public const int TRANSPOSITION_TABLE_NUM_ENTRIES = 10_000_000;
         public const int TRANSPOSITION_DEPTH_OFFSET = 1;
         
         public const int BOARD_SIZE = ROWS * COLS;

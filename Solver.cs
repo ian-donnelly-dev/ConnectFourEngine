@@ -13,7 +13,7 @@ namespace ConnectFourEngine
             this.board = board;
             this.searchDepthLimit = searchDepthLimit;
             
-            transpositionTable = new TranspositionTable(Constants.TRANSPOSITION_TABLE_SIZE_MB);
+            transpositionTable = new TranspositionTable(Constants.TRANSPOSITION_TABLE_NUM_ENTRIES);
         }
         
         public int[] RootMinimax()

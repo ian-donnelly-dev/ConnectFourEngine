@@ -6,9 +6,9 @@ public class TranspositionTable
     private readonly Dictionary<ulong, int> table;
     private readonly Queue<ulong> order;
 
-    public TranspositionTable(int sizeMegabytes)
+    public TranspositionTable(int maxEntries)
     {
-        maxEntries = sizeMegabytes * 1024 * 1024 / 12;
+        this.maxEntries = maxEntries;
         table = new Dictionary<ulong, int>(maxEntries);
         order = new Queue<ulong>(maxEntries);
     }
