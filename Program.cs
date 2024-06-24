@@ -9,12 +9,14 @@ namespace ConnectFourEngine
         static void Main()
         {
             Board board = new Board();
-            string boardState = "000000_000000_000000_120000_100000_000000_000000";
+            string boardState = "000000_000000_000000_121200_000000_000000_000000";
             board.ImportBoardState(boardState);
             
             Console.WriteLine($"Loaded board state string {board.ExportBoardState()}:");
             Console.WriteLine(board.StringifyBoard());
             Console.WriteLine();
+            
+            Console.WriteLine(board.GetBoardKey());
             
             Solver solver = new Solver(board);
             

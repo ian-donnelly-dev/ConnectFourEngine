@@ -196,6 +196,11 @@ namespace ConnectFourEngine
             return isPlayer1 ? BitOperations.PopCount(Player1Bitboard) : BitOperations.PopCount(Player2Bitboard);
         }
         
+        public ulong GetBoardKey()
+        {
+            return (IsPlayer1Turn() ? Player1Bitboard : Player2Bitboard) + (Player1Bitboard | Player2Bitboard);
+        }
+        
         private int GetColumnHeight(int column)
         {
             ulong columnMask = Constants.FIRST_COLUMN_MASK << (column * (Constants.ROWS + 1));
