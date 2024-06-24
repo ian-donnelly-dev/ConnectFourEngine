@@ -5,13 +5,13 @@ namespace ConnectFourEngine
 {
     public class Board
     {
-        private ulong Player1Bitboard = 0UL;
-        private ulong Player2Bitboard = 0UL;
+        private ulong player1Bitboard = 0UL;
+        private ulong player2Bitboard = 0UL;
         
         public void ImportBoardState(string stateString)
         {
-            Player1Bitboard = 0UL;
-            Player2Bitboard = 0UL;
+            player1Bitboard = 0UL;
+            player2Bitboard = 0UL;
             int bitIndex = 0;
             
             foreach (char cellState in stateString)
@@ -22,11 +22,11 @@ namespace ConnectFourEngine
                         bitIndex++;
                         break;
                     case '1':
-                        Player1Bitboard |= 1UL << bitIndex;
+                        player1Bitboard |= 1UL << bitIndex;
                         bitIndex++;
                         break;
                     case '2':
-                        Player2Bitboard |= 1UL << bitIndex;
+                        player2Bitboard |= 1UL << bitIndex;
                         bitIndex++;
                         break;
                 }
@@ -49,11 +49,11 @@ namespace ConnectFourEngine
                 {
                     ulong mask = 1UL << bitIndex;
                     
-                    if ((Player1Bitboard & mask) != 0)
+                    if ((player1Bitboard & mask) != 0)
                     {
                         encodedBoard.Append('1');
                     }
-                    else if ((Player2Bitboard & mask) != 0)
+                    else if ((player2Bitboard & mask) != 0)
                     {
                         encodedBoard.Append('2');
                     }
@@ -89,11 +89,11 @@ namespace ConnectFourEngine
                 {
                     ulong mask = 1UL << col * (Constants.ROWS + 1) + row;
                     
-                    if ((Player1Bitboard & mask) != 0)
+                    if ((player1Bitboard & mask) != 0)
                     {
                         displayBoard.Append('x');
                     }
-                    else if ((Player2Bitboard & mask) != 0)
+                    else if ((player2Bitboard & mask) != 0)
                     {
                         displayBoard.Append('o');
                     }
@@ -119,7 +119,7 @@ namespace ConnectFourEngine
         
         public bool IsPlayer1Turn()
         {
-            return BitOperations.PopCount(Player1Bitboard) == BitOperations.PopCount(Player2Bitboard);
+            return BitOperations.PopCount(player1Bitboard) == BitOperations.PopCount(player2Bitboard);
         }
         
         public bool IsColumnPlayable(int column)
@@ -133,11 +133,11 @@ namespace ConnectFourEngine
             
             if (IsPlayer1Turn())
             {
-                Player1Bitboard |= moveBit;
+                player1Bitboard |= moveBit;
             }
             else
             {
-                Player2Bitboard |= moveBit;
+                player2Bitboard |= moveBit;
             }
         }
         
@@ -147,17 +147,17 @@ namespace ConnectFourEngine
             
             if (IsPlayer1Turn())
             {
-                Player2Bitboard &= ~moveBit;
+                player2Bitboard &= ~moveBit;
             }
             else
             {
-                Player1Bitboard &= ~moveBit;
+                player1Bitboard &= ~moveBit;
             }
         }
         
         public bool IsWinner(bool isPlayer1)
         {
-            ulong bitboard = isPlayer1 ? Player1Bitboard : Player2Bitboard;
+            ulong bitboard = isPlayer1 ? player1Bitboard : player2Bitboard;
             
             ulong diag1 = bitboard & (bitboard >> (Constants.ROWS + 0));
             if ((diag1 & (diag1 >> 2 * (Constants.ROWS + 0))) != 0)
@@ -188,23 +188,23 @@ namespace ConnectFourEngine
         
         public bool IsBoardFull()
         {
-            return BitOperations.PopCount(Player1Bitboard | Player2Bitboard) == Constants.BOARD_SIZE;
+            return BitOperations.PopCount(player1Bitboard | player2Bitboard) == Constants.BOARD_SIZE;
         }
         
         public int GetMovesCount(bool isPlayer1)
         {
-            return isPlayer1 ? BitOperations.PopCount(Player1Bitboard) : BitOperations.PopCount(Player2Bitboard);
+            return isPlayer1 ? BitOperations.PopCount(player1Bitboard) : BitOperations.PopCount(player2Bitboard);
         }
         
         public ulong GetBoardKey()
         {
-            return (IsPlayer1Turn() ? Player1Bitboard : Player2Bitboard) + (Player1Bitboard | Player2Bitboard);
+            return (IsPlayer1Turn() ? player1Bitboard : player2Bitboard) + (player1Bitboard | player2Bitboard);
         }
         
         private int GetColumnHeight(int column)
         {
             ulong columnMask = Constants.FIRST_COLUMN_MASK << (column * (Constants.ROWS + 1));
-            return BitOperations.PopCount((Player1Bitboard | Player2Bitboard) & columnMask);
+            return BitOperations.PopCount((player1Bitboard | player2Bitboard) & columnMask);
         }
     }
 }
