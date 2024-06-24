@@ -16,7 +16,8 @@ namespace ConnectFourEngine
             Console.WriteLine(board.StringifyBoard());
             Console.WriteLine();
             
-            Console.WriteLine(board.GetBoardKey());
+            Console.WriteLine($"Board state key: {board.GetBoardKey()}.");
+            Console.WriteLine();
             
             Solver solver = new Solver(board);
             
