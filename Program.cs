@@ -18,8 +18,9 @@ namespace ConnectFourEngine
             
             Console.WriteLine($"Board state key: {board.GetBoardKey()}.");
             Console.WriteLine();
-            
-            Solver solver = new Solver(board, 64);
+
+            int searchDepthLimit = 20;
+            Solver solver = new Solver(board, searchDepthLimit);
             
             Stopwatch stopwatch = Stopwatch.StartNew();
             int[] scores = solver.RootMinimax();
@@ -36,7 +37,7 @@ namespace ConnectFourEngine
             List<int> bestColumns = GetBestColumns(scores, isPlayer1Turn);
             
             Console.WriteLine($"Player {(isPlayer1Turn ? "1 (maximizer)" : "2 (minimizer)")} should play in column(s): [{string.Join(", ", bestColumns)}].");
-            Console.WriteLine($"Minimax processing completed at depth {Constants.MINIMAX_DEPTH_LIMIT} in {stopwatch.ElapsedMilliseconds}ms.");
+            Console.WriteLine($"Minimax processing completed at depth {searchDepthLimit} in {stopwatch.ElapsedMilliseconds}ms.");
         }
 
         private static List<int> GetBestColumns(int[] scores, bool isPlayer1Turn)

@@ -6,11 +6,14 @@ namespace ConnectFourEngine
     {
         private readonly Board board;
         private readonly TranspositionTable transpositionTable;
+        private readonly int searchDepthLimit;
         
-        public Solver(Board board, int tableSizeMb)
+        public Solver(Board board, int searchDepthLimit)
         {
             this.board = board;
-            transpositionTable = new TranspositionTable(tableSizeMb);
+            this.searchDepthLimit = searchDepthLimit;
+            
+            transpositionTable = new TranspositionTable(Constants.TRANSPOSITION_TABLE_SIZE_MB);
         }
         
         public int[] RootMinimax()
@@ -29,7 +32,7 @@ namespace ConnectFourEngine
         
         private int RecursiveMinimax(bool maximizingPlayer, int depth, int alpha, int beta)
         {
-            if (depth == Constants.MINIMAX_DEPTH_LIMIT)
+            if (depth == searchDepthLimit)
             {
                 return 0;
             }
@@ -91,8 +94,11 @@ namespace ConnectFourEngine
                     break;
                 }
             }
-            
-            transpositionTable.AddEntry(key, bestScore);
+
+            if (depth + Constants.TRANSPOSITION_DEPTH_OFFSET < searchDepthLimit)
+            {
+                transpositionTable.AddEntry(key, bestScore);
+            }
 
             return bestScore;
         }
