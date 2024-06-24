@@ -158,31 +158,31 @@ namespace ConnectFourEngine
         public bool IsWinner(bool isPlayer1)
         {
             ulong bitboard = isPlayer1 ? Player1Bitboard : Player2Bitboard;
-
+            
             ulong diag1 = bitboard & (bitboard >> (Constants.ROWS + 0));
             if ((diag1 & (diag1 >> 2 * (Constants.ROWS + 0))) != 0)
             {
                 return true;
             }
-
+            
             ulong diag2 = bitboard & (bitboard >> (Constants.ROWS + 2));
             if ((diag2 & (diag2 >> 2 * (Constants.ROWS + 2))) != 0)
             {
                 return true;
             }
-
+            
             ulong horizontal = bitboard & (bitboard >> (Constants.ROWS + 1));
             if ((horizontal & (horizontal >> 2 * (Constants.ROWS + 1))) != 0)
             {
                 return true;
             }
-
+            
             ulong vertical = bitboard & (bitboard >> 1);
             if ((vertical & (vertical >> 2)) != 0)
             {
                 return true;
             }
-
+            
             return false;
         }
         

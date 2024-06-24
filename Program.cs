@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace ConnectFourEngine
 {
@@ -7,25 +9,53 @@ namespace ConnectFourEngine
         static void Main()
         {
             Board board = new Board();
+            string boardState = "000000_000000_000000_120000_100000_000000_000000";
+            board.ImportBoardState(boardState);
             
-            board.ImportBoardState("000000_000000_100000_120000_000000_200000_000000");
-            
+            Console.WriteLine($"Loaded board state string {board.ExportBoardState()}:");
             Console.WriteLine(board.StringifyBoard());
             Console.WriteLine();
             
-            for (int col = 0; col < Constants.COLS; col++)
+            Solver solver = new Solver(board);
+            
+            Stopwatch stopwatch = Stopwatch.StartNew();
+            int[] scores = solver.RootMinimax();
+            stopwatch.Stop();
+            
+            Console.WriteLine("Raw scores:");
+            for (int col = 0; col < scores.Length; col++)
             {
-                if (!board.IsColumnPlayable(col))
-                {
-                    continue;
-                }
-
-                board.MakeMove(col);
-                int score = Solvers.Minimax(board, board.IsPlayer1Turn(), Constants.MINIMAX_DEPTH_LIMIT, -Constants.MAX_SCORE, +Constants.MAX_SCORE);
-                board.UnmakeMove(col);
-
-                Console.WriteLine($"Column: {col}, Score: {score}");
+                Console.WriteLine($"Column {col} score: {scores[col]}");
             }
+            Console.WriteLine();
+            
+            bool isPlayer1Turn = board.IsPlayer1Turn();
+            List<int> bestColumns = GetBestColumns(scores, isPlayer1Turn);
+            
+            Console.WriteLine($"Player {(isPlayer1Turn ? "1 (maximizer)" : "2 (minimizer)")} should play in column(s): [{string.Join(", ", bestColumns)}].");
+            Console.WriteLine($"Minimax processing completed at depth {Constants.MINIMAX_DEPTH_LIMIT} in {stopwatch.ElapsedMilliseconds}ms.");
+        }
+
+        private static List<int> GetBestColumns(int[] scores, bool isPlayer1Turn)
+        {
+            List<int> bestColumns = new List<int>();
+            int bestScore = isPlayer1Turn ? Constants.MIN_SCORE : Constants.MAX_SCORE;
+            
+            for (int col = 0; col < scores.Length; col++)
+            {
+                if ((isPlayer1Turn && scores[col] > bestScore) || (!isPlayer1Turn && scores[col] < bestScore))
+                {
+                    bestScore = scores[col];
+                    bestColumns.Clear();
+                    bestColumns.Add(col);
+                }
+                else if (scores[col] == bestScore)
+                {
+                    bestColumns.Add(col);
+                }
+            }
+            
+            return bestColumns;
         }
     }
 }
