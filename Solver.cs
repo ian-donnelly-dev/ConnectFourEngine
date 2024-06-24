@@ -56,18 +56,7 @@ namespace ConnectFourEngine
             
             for (int i = 0; i < Constants.COLS; i++)
             {
-                int col;
-                switch (i)
-                {
-                    case 0: col = 3; break;
-                    case 1: col = 2; break;
-                    case 2: col = 4; break;
-                    case 3: col = 1; break;
-                    case 4: col = 5; break;
-                    case 5: col = 0; break;
-                    case 6: col = 6; break;
-                    default: continue;
-                }
+                int col = GetColumnOrder(i);
                 
                 if (!board.IsColumnPlayable(col))
                 {
@@ -96,6 +85,20 @@ namespace ConnectFourEngine
             }
             
             return bestScore;
+        }
+        
+        private static int GetColumnOrder(int index)
+        {
+            switch (index)
+            {
+                case 0: return 3;
+                case 1: return 2;
+                case 2: return 4;
+                case 3: return 1;
+                case 4: return 5;
+                case 5: return 0;
+                default: return 6;
+            }
         }
     }
 }
