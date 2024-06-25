@@ -5,13 +5,13 @@ namespace ConnectFourEngine
     public class Solver
     {
         private readonly Board board;
-        private readonly int searchDepthLimit;
+        private readonly int maxSearchDepth;
         private readonly TranspositionTable transpositionTable;
         
-        public Solver(Board board, int searchDepthLimit)
+        public Solver(Board board, int maxSearchDepth)
         {
             this.board = board;
-            this.searchDepthLimit = searchDepthLimit;
+            this.maxSearchDepth = maxSearchDepth;
             
             transpositionTable = new TranspositionTable(Constants.TRANSPOSITION_TABLE_NUM_ENTRIES);
         }
@@ -24,7 +24,7 @@ namespace ConnectFourEngine
             {
                 if (!board.IsColumnPlayable(col))
                 {
-                    throw new NotImplementedException();
+                    continue;
                 }
                 
                 board.MakeMove(col);
@@ -37,7 +37,7 @@ namespace ConnectFourEngine
         
         private int RecursiveMinimax(bool maximizingPlayer, int depth, int alpha, int beta)
         {
-            if (depth == searchDepthLimit)
+            if (depth == maxSearchDepth)
             {
                 return 0;
             }
@@ -100,12 +100,17 @@ namespace ConnectFourEngine
                 }
             }
 
-            if (depth + Constants.TRANSPOSITION_DEPTH_OFFSET < searchDepthLimit)
+            if (depth + Constants.TRANSPOSITION_DEPTH_OFFSET < maxSearchDepth)
             {
                 transpositionTable.AddEntry(key, bestScore);
             }
 
             return bestScore;
+        }
+        
+        public float GetTranspositionTableLoadFactor()
+        {
+            return transpositionTable.GetLoadFactor();
         }
         
         private static int GetColumnOrder(int index)
