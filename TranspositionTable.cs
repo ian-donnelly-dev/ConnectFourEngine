@@ -22,7 +22,7 @@ namespace ConnectFourEngine
         
         public void AddEntry(ulong key, int score)
         {
-            if (table.Count >= maxEntries)
+            if (table.Count == maxEntries)
             {
                 ulong oldestKey = order.Dequeue();
                 table.Remove(oldestKey);
@@ -30,6 +30,11 @@ namespace ConnectFourEngine
             
             table[key] = score;
             order.Enqueue(key);
+        }
+        
+        public float GetLoadFactor()
+        {
+            return (float)table.Count / maxEntries;
         }
     }
 }
