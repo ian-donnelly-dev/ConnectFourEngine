@@ -198,7 +198,7 @@ namespace ConnectFourEngine
         
         public ulong GetBoardKey()
         {
-            return (IsPlayer1Turn() ? player1Bitboard : player2Bitboard) + (player1Bitboard | player2Bitboard);
+            return player1Bitboard + (player1Bitboard | player2Bitboard);
         }
         
         private int GetColumnHeight(int column)
