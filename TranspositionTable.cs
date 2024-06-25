@@ -1,32 +1,35 @@
 ﻿using System.Collections.Generic;
 
-public class TranspositionTable
+namespace ConnectFourEngine
 {
-    private readonly int maxEntries;
-    private readonly Dictionary<ulong, int> table;
-    private readonly Queue<ulong> order;
-
-    public TranspositionTable(int maxEntries)
+    public class TranspositionTable
     {
-        this.maxEntries = maxEntries;
-        table = new Dictionary<ulong, int>(maxEntries);
-        order = new Queue<ulong>(maxEntries);
-    }
-
-    public bool TryGetValue(ulong key, out int score)
-    {
-        return table.TryGetValue(key, out score);
-    }
-
-    public void AddEntry(ulong key, int score)
-    {
-        if (table.Count >= maxEntries)
+        private readonly int maxEntries;
+        private readonly Dictionary<ulong, int> table;
+        private readonly Queue<ulong> order;
+        
+        public TranspositionTable(int maxEntries)
         {
-            ulong oldestKey = order.Dequeue();
-            table.Remove(oldestKey);
+            this.maxEntries = maxEntries;
+            table = new Dictionary<ulong, int>(maxEntries);
+            order = new Queue<ulong>(maxEntries);
         }
-
-        table[key] = score;
-        order.Enqueue(key);
+        
+        public bool TryGetValue(ulong key, out int score)
+        {
+            return table.TryGetValue(key, out score);
+        }
+        
+        public void AddEntry(ulong key, int score)
+        {
+            if (table.Count >= maxEntries)
+            {
+                ulong oldestKey = order.Dequeue();
+                table.Remove(oldestKey);
+            }
+            
+            table[key] = score;
+            order.Enqueue(key);
+        }
     }
 }
