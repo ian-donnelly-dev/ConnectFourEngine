@@ -5,8 +5,8 @@ namespace ConnectFourEngine
     public class Solver
     {
         private readonly Board board;
-        private readonly TranspositionTable transpositionTable;
         private readonly int searchDepthLimit;
+        private readonly TranspositionTable transpositionTable;
         
         public Solver(Board board, int searchDepthLimit)
         {
@@ -22,6 +22,11 @@ namespace ConnectFourEngine
             
             for (int col = 0; col < Constants.COLS; col++)
             {
+                if (!board.IsColumnPlayable(col))
+                {
+                    throw new NotImplementedException();
+                }
+                
                 board.MakeMove(col);
                 scores[col] = RecursiveMinimax(board.IsPlayer1Turn(), 0, Constants.MIN_SCORE, Constants.MAX_SCORE);
                 board.UnmakeMove(col);
