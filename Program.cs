@@ -25,14 +25,7 @@ namespace ConnectFourEngine
             
             for (int col = 0; col < scores.Length; col++)
             {
-                if (board.IsColumnPlayable(col))
-                {
-                    Console.WriteLine($"Column {col} score: {scores[col]}.");
-                }
-                else
-                {
-                    Console.WriteLine($"Column {col} score: full.");
-                }
+                Console.WriteLine($"Column {col} score: {(board.IsColumnPlayable(col) ? scores[col].ToString() : "full")}.");
             }
             Console.WriteLine();
             
